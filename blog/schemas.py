@@ -7,9 +7,7 @@ class Blog(BaseModel):
     body: str
 
 
-class showblog(Blog):   #inherit all from Blog, which is title and body
-    class Config:
-        from_attributes = True    #orm mode True
+
 
 
 class showblogtitle(BaseModel):  #inherit only title from basemodel,
@@ -27,6 +25,14 @@ class User(BaseModel):
 class showuser(BaseModel):
     name: str
     email: str
-    
+
     class Config:
         from_attributes = True
+
+
+class showblog(Blog):   #inherit all from Blog, which is title and body
+    
+    creator: showuser
+    
+    class Config:
+        from_attributes = True    #orm mode True

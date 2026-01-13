@@ -17,16 +17,16 @@ def get_db():
     finally:
         db.close()
 
-@app.post('/blog', status_code=status.HTTP_201_CREATED)   #type status. then created -.> will autocomplete to HTTP_201.....
+@app.post('/blog', status_code=status.HTTP_201_CREATED, tags=['Blogs'])   #type status. then created -.> will autocomplete to HTTP_201.....
 def create(request: schemas.Blog, db: Session = Depends(get_db)):       #use Blog -> schemas.Blog 
-    new_blog = models.Blog(title=request.title, body=request.body)
+    new_blog = models.Blog(title=request.title, body=request.body, user_id = 1)
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)
     return new_blog
 
 
-@app.delete('/blog/{id}', status_code=status.HTTP_204_NO_CONTENT)
+@app.delete('/blog/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=['Blogs'])
 def destroy(id, db: Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id)
     
@@ -38,7 +38,7 @@ def destroy(id, db: Session=Depends(get_db)):
     return {'done'}
     
 
-@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED)
+@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED, tags=['Blogs'])
 def update(id, request: schemas.Blog, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id)     #query me request ko as a dictionary pass kra
     
@@ -50,13 +50,13 @@ def update(id, request: schemas.Blog, db: Session = Depends(get_db)):
     return 'updated yara'
 
 
-@app.get('/blog', status_code=status.HTTP_200_OK, response_model=list[schemas.showblog])
+@app.get('/blog', status_code=status.HTTP_200_OK, response_model=list[schemas.showblog], tags=['Blogs'])
 def all(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
 
-@app.get('/blog/{id}', status_code=status.HTTP_200_OK, response_model=schemas.showblog)  #show full blog, using showblog schema (Blog class inherited)
+@app.get('/blog/{id}', status_code=status.HTTP_200_OK, response_model=schemas.showblog, tags=['Blogs'])  #show full blog, using showblog schema (Blog class inherited)
 def show(id, response: Response, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blog:
@@ -68,7 +68,7 @@ def show(id, response: Response, db: Session = Depends(get_db)):
     return blog
 
 
-@app.get('/blog_title/{id}', status_code=status.HTTP_200_OK, response_model=schemas.showblogtitle)  #show only title, using different schema (baseclass title inherited)
+@app.get('/blog_title/{id}', status_code=status.HTTP_200_OK, response_model=schemas.showblogtitle, tags=['Blogs'])  #show only title, using different schema (baseclass title inherited)
 def show_title_only(id, response: Response, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blog:
@@ -80,7 +80,7 @@ def show_title_only(id, response: Response, db: Session = Depends(get_db)):
 #from passlib.context import CryptContext                                    line 80, 81, 86, 90
 #pwd_cxt = CryptContext(schemes=['bcrypt'], deprecated='auto')              
 
-@app.post('/user', response_model=schemas.showuser)
+@app.post('/user', response_model=schemas.showuser, tags=['Users'])
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
     
     #hashed_pass = pwd_cxt.hash(request.password)  
@@ -93,7 +93,7 @@ def create_user(request: schemas.User, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-@app.get('/user/{id}', response_model=schemas.showuser)
+@app.get('/user/{id}', response_model=schemas.showuser, tags=['Users'])
 def get_user(id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == id).first()
     
