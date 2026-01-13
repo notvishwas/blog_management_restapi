@@ -9,7 +9,7 @@ class Blog(BaseModel):
 
 class showblog(Blog):   #inherit all from Blog, which is title and body
     class Config:
-        from_attributes = True
+        from_attributes = True    #orm mode True
 
 
 class showblogtitle(BaseModel):  #inherit only title from basemodel,
