@@ -80,7 +80,7 @@ def show_title_only(id, response: Response, db: Session = Depends(get_db)):
 #from passlib.context import CryptContext                                    line 80, 81, 86, 90
 #pwd_cxt = CryptContext(schemes=['bcrypt'], deprecated='auto')              
 
-@app.post('/user')
+@app.post('/user', response_model=schemas.showuser)
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
     
     #hashed_pass = pwd_cxt.hash(request.password)  
@@ -93,4 +93,11 @@ def create_user(request: schemas.User, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-
+@app.get('/user/{id}', response_model=schemas.showuser)
+def get_user(id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'user with id {id} not found')
+    
+    return user
