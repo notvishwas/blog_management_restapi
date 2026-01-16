@@ -1,13 +1,15 @@
-
+from typing import List
 from pydantic import BaseModel
 
 
-class Blog(BaseModel):
+class BlogBase(BaseModel):
     title: str
     body: str
 
 
-
+class Blog(BlogBase):
+    class Config:
+        from_attributes = True
 
 
 class showblogtitle(BaseModel):  #inherit only title from basemodel,
@@ -22,17 +24,24 @@ class User(BaseModel):
     email: str
     password: str
 
-class showuser(BaseModel):
+class creatorshowuser(BaseModel):
     name: str
     email: str
 
     class Config:
         from_attributes = True
 
+class showuser(BaseModel):
+    name: str
+    email: str
+    blogs: List[Blog] = []
 
-class showblog(Blog):   #inherit all from Blog, which is title and body
-    
-    creator: showuser
+    class Config:
+        from_attributes = True
+
+
+class showblog(Blog):   #inherit all from Blog, which is title and body    
+    creator: creatorshowuser
     
     class Config:
         from_attributes = True    #orm mode True

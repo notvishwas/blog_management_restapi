@@ -21,5 +21,3 @@ class User(Base):
 
     blogs = relationship("Blog", back_populates='creator')
 
-
-
