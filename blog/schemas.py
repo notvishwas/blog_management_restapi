@@ -45,3 +45,8 @@ class showblog(Blog):   #inherit all from Blog, which is title and body
     
     class Config:
         from_attributes = True    #orm mode True
+
+
+class Login(BaseModel):
+    username: str
+    password: str
