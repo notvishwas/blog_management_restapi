@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel
-
+from typing import Optional
 
 class BlogBase(BaseModel):
     title: str
@@ -50,3 +50,15 @@ class showblog(Blog):   #inherit all from Blog, which is title and body
 class Login(BaseModel):
     username: str
     password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
+    
+    
+    
+    
+    

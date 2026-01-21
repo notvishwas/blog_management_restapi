@@ -7,3 +7,8 @@ class Hash():
     def bcrypt(password: str):
         hashed_pass = pwd_cxt.hash(password)
         return hashed_pass
+    
+    
+    def verify(plain_password, hashed_password):
+        return pwd_cxt.verify(plain_password, hashed_password)
+    
