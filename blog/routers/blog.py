@@ -67,3 +67,6 @@ def show_title_only(id, response: Response, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'blog with the id {id} is not available')
 
     return blog
+
+
+
