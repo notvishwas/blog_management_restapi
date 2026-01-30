@@ -6,7 +6,6 @@ class BlogBase(BaseModel):
     title: str
     body: str
 
-
 class Blog(BlogBase):
     class Config:
         from_attributes = True
